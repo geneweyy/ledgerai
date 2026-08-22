@@ -6,6 +6,7 @@ import { formatRM } from "../utils";
 import { TopBar } from "../components/TopBar";
 import { TabBar } from "../components/TabBar";
 import { useToast } from "../components/Toast";
+import { IconCheck, IconShare } from "../components/Icons";
 
 export const Tax: React.FC = () => {
   const { state, eInvoiceUnlocked } = useStore();
@@ -103,7 +104,17 @@ export const Tax: React.FC = () => {
                     <div className="muted">Generated {new Date().toLocaleDateString()} (simulated)</div>
                   </div>
                   <button className="btn btn-secondary btn-block" onClick={handleShare} disabled={sharing}>
-                    {sharing ? "…" : shared ? "✓ Shared" : `📲 ${t(lang, "shareWhatsapp")}`}
+                    {sharing ? (
+                      "…"
+                    ) : shared ? (
+                      <>
+                        <IconCheck size={17} /> Shared
+                      </>
+                    ) : (
+                      <>
+                        <IconShare size={17} /> {t(lang, "shareWhatsapp")}
+                      </>
+                    )}
                   </button>
                 </>
               )}

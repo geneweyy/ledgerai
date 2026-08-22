@@ -7,6 +7,7 @@ import { TopBar } from "../components/TopBar";
 import { LimitModal } from "../components/LimitModal";
 import { useToast } from "../components/Toast";
 import type { CatalogItem } from "../types";
+import { IconMinus, IconPlus, IconReceipt } from "../components/Icons";
 
 export const CatalogPicker: React.FC = () => {
   const { state, addEntry, canAddEntry } = useStore();
@@ -103,11 +104,11 @@ export const CatalogPicker: React.FC = () => {
           <p className="section-title" style={{ textAlign: "center" }}>{t(lang, "quantity")}</p>
           <div className="stepper">
             <button onClick={() => adjustQty(-1)} disabled={qty <= 1} aria-label="decrease">
-              −
+              <IconMinus size={18} />
             </button>
             <span className="qty-value">{qty}</span>
             <button onClick={() => adjustQty(1)} aria-label="increase">
-              +
+              <IconPlus size={18} />
             </button>
           </div>
 
@@ -146,7 +147,7 @@ export const CatalogPicker: React.FC = () => {
       <div className="page">
         {state.catalogItems.length === 0 ? (
           <div className="empty-state">
-            <div className="empty-icon">📋</div>
+            <div className="empty-icon"><IconReceipt size={26} /></div>
             <p style={{ margin: 0 }}>{t(lang, "noCatalogItems")}</p>
             <button className="btn btn-primary" onClick={() => navigate("/catalog")}>
               {t(lang, "addCatalogItem")}

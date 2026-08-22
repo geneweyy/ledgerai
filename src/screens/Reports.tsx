@@ -5,6 +5,7 @@ import { t } from "../i18n";
 import { formatRM, isSameLocalDay, startOfMonth, startOfWeek } from "../utils";
 import { TopBar } from "../components/TopBar";
 import { TabBar } from "../components/TabBar";
+import { IconChart } from "../components/Icons";
 
 type Range = "today" | "week" | "month";
 
@@ -91,16 +92,26 @@ export const Reports: React.FC = () => {
 
         {filtered.length === 0 ? (
           <div className="empty-state">
-            <div className="empty-icon">📊</div>
+            <div className="empty-icon"><IconChart size={26} /></div>
             <p style={{ margin: 0 }}>{t(lang, "noEntriesInPeriod")}</p>
           </div>
         ) : (
-          <div className="card">
+          <div className="card chart-card">
             <p className="section-title" style={{ marginTop: 0 }}>{t(lang, "income")} vs {t(lang, "expense")}</p>
+            <div className="chart-legend">
+              <span className="chart-legend-item">
+                <span className="chart-legend-dot income" />
+                {t(lang, "income")}
+              </span>
+              <span className="chart-legend-item">
+                <span className="chart-legend-dot expense" />
+                {t(lang, "expense")}
+              </span>
+            </div>
             <div className="bar-chart">
               {dayBuckets.map((b, i) => (
                 <div className="bar-col" key={i}>
-                  <div style={{ display: "flex", gap: 2, alignItems: "flex-end", height: "100%", width: "100%" }}>
+                  <div className="bar-pair">
                     <div className="bar" style={{ height: `${(b.income / maxVal) * 100}%` }} />
                     <div className="bar expense" style={{ height: `${(b.expense / maxVal) * 100}%` }} />
                   </div>

@@ -8,6 +8,7 @@ import { TabBar } from "../components/TabBar";
 import { ConfirmModal } from "../components/ConfirmModal";
 import { useToast } from "../components/Toast";
 import type { CatalogItem } from "../types";
+import { IconPlus, IconEdit, IconTrash, IconReceipt } from "../components/Icons";
 
 const CATEGORY_OPTIONS = ["Food", "Beverage", "Snack", "Ingredients", "Other"];
 
@@ -115,12 +116,12 @@ export const CatalogManage: React.FC = () => {
       <TopBar title={t(lang, "catalog")} onBack={() => navigate(-1)} />
       <div className="page">
         <button className="btn btn-primary btn-block" onClick={openNew}>
-          + {t(lang, "addCatalogItem")}
+          <IconPlus size={18} /> {t(lang, "addCatalogItem")}
         </button>
 
         {state.catalogItems.length === 0 ? (
           <div className="empty-state">
-            <div className="empty-icon">📋</div>
+            <div className="empty-icon"><IconReceipt size={26} /></div>
             <p style={{ margin: 0 }}>{t(lang, "noCatalogItems")}</p>
           </div>
         ) : (
@@ -132,11 +133,11 @@ export const CatalogManage: React.FC = () => {
                   <div className="entry-meta">{item.category} · {formatRM(item.price)}</div>
                 </div>
                 <div style={{ display: "flex", gap: 6 }}>
-                  <button className="btn btn-secondary" style={{ padding: "8px 12px", minHeight: 36 }} onClick={() => openEdit(item)}>
-                    {t(lang, "edit")}
+                  <button className="btn btn-secondary" style={{ padding: "8px 10px", minHeight: 36 }} onClick={() => openEdit(item)} aria-label={t(lang, "edit")}>
+                    <IconEdit size={16} />
                   </button>
-                  <button className="btn btn-danger" style={{ padding: "8px 12px", minHeight: 36 }} onClick={() => setDeleteTarget(item)}>
-                    {t(lang, "delete")}
+                  <button className="btn btn-danger" style={{ padding: "8px 10px", minHeight: 36 }} onClick={() => setDeleteTarget(item)} aria-label={t(lang, "delete")}>
+                    <IconTrash size={16} />
                   </button>
                 </div>
               </div>

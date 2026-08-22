@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { IconChevronBack } from "./Icons";
 
 export const TopBar: React.FC<{ title: string; onBack?: () => void; right?: React.ReactNode }> = ({
   title,
@@ -15,10 +16,10 @@ export const TopBar: React.FC<{ title: string; onBack?: () => void; right?: Reac
         aria-label="Back"
         style={{ visibility: onBack === undefined && window.history.length <= 1 ? "hidden" : "visible" }}
       >
-        ‹
+        <IconChevronBack size={22} />
       </button>
       <h1>{title}</h1>
-      <div style={{ minWidth: 40, display: "flex", justifyContent: "flex-end" }}>{right}</div>
+      <div className="top-bar-side">{right}</div>
     </div>
   );
 };

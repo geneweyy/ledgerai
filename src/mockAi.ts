@@ -37,6 +37,22 @@ export const mockVoicePhrasesEN: MockVoiceResult[] = [
   { amount: 27.5, category: "Food", note: "Sold five roti canai sets", type: "income" },
 ];
 
+export const mockVoicePhrasesZH: MockVoiceResult[] = [
+  { amount: 16, category: "Food", note: "卖了八份炒河粉", type: "income" },
+  { amount: 7, category: "Beverage", note: "卖了三杯拉茶", type: "income" },
+  { amount: 35, category: "Ingredients", note: "在巴刹买鸡肉", type: "expense" },
+  { amount: 9, category: "Utilities", note: "缴付煮食用的煤气费", type: "expense" },
+  { amount: 24, category: "Food", note: "卖了五份椰浆饭", type: "income" },
+];
+
+export const mockVoicePhrasesTA: MockVoiceResult[] = [
+  { amount: 14, category: "Food", note: "பத்து பொட்டி நாசி லெமாக் விற்றேன்", type: "income" },
+  { amount: 6.5, category: "Beverage", note: "நான்கு டேह் தார்க் விற்றேன்", type: "income" },
+  { amount: 28, category: "Ingredients", note: "சந்தையில் கோழி இறைச்சி வாங்கினேன்", type: "expense" },
+  { amount: 11, category: "Utilities", note: "சமையல் காஸ் கட்டணம் செலுத்தினேன்", type: "expense" },
+  { amount: 20, category: "Food", note: "ஐந்து தட்டு மீ கோரெங் விற்றேன்", type: "income" },
+];
+
 export function pickRandom<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }

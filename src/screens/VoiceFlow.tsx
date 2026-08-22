@@ -6,9 +6,33 @@ import { TopBar } from "../components/TopBar";
 import { EntryForm } from "../components/EntryForm";
 import { LimitModal } from "../components/LimitModal";
 import { useToast } from "../components/Toast";
-import { mockVoicePhrasesBM, mockVoicePhrasesEN, pickRandom, shouldSimulateFailure, type MockVoiceResult } from "../mockAi";
+import {
+  mockVoicePhrasesBM,
+  mockVoicePhrasesEN,
+  mockVoicePhrasesZH,
+  mockVoicePhrasesTA,
+  pickRandom,
+  shouldSimulateFailure,
+  type MockVoiceResult,
+} from "../mockAi";
+import { IconMic, IconFlask, IconSad } from "../components/Icons";
+import type { Language } from "../types";
 
 type Step = "listen" | "processing" | "failed" | "confirm";
+
+const VOICE_LANGS: { code: Language; label: string }[] = [
+  { code: "en", label: "English" },
+  { code: "bm", label: "Bahasa Malaysia" },
+  { code: "zh", label: "中文" },
+  { code: "ta", label: "தமிழ்" },
+];
+
+const VOICE_PHRASE_POOLS: Record<Language, MockVoiceResult[]> = {
+  en: mockVoicePhrasesEN,
+  bm: mockVoicePhrasesBM,
+  zh: mockVoicePhrasesZH,
+  ta: mockVoicePhrasesTA,
+};
 
 export const VoiceFlow: React.FC = () => {
   const { state, addEntry, canAddEntry } = useStore();
@@ -18,7 +42,7 @@ export const VoiceFlow: React.FC = () => {
 
   const [showLimitModal, setShowLimitModal] = useState(!canAddEntry());
   const [step, setStep] = useState<Step>("listen");
-  const [voiceLang, setVoiceLang] = useState<"bm" | "en">(lang === "bm" ? "bm" : "en");
+  const [voiceLang, setVoiceLang] = useState<Language>(lang);
   const [result, setResult] = useState<MockVoiceResult | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -35,7 +59,7 @@ export const VoiceFlow: React.FC = () => {
       if (shouldSimulateFailure()) {
         setStep("failed");
       } else {
-        const pool = voiceLang === "bm" ? mockVoicePhrasesBM : mockVoicePhrasesEN;
+        const pool = VOICE_PHRASE_POOLS[voiceLang];
         setResult(pickRandom(pool));
         setStep("confirm");
       }
@@ -57,19 +81,22 @@ export const VoiceFlow: React.FC = () => {
       <div className="page">
         {step === "listen" && (
           <>
-            <div className="pill-toggle">
-              <button className={voiceLang === "bm" ? "active" : ""} onClick={() => setVoiceLang("bm")}>
-                BM
-              </button>
-              <button className={voiceLang === "en" ? "active" : ""} onClick={() => setVoiceLang("en")}>
-                EN
-              </button>
+            <div className="lang-grid">
+              {VOICE_LANGS.map((l) => (
+                <button
+                  key={l.code}
+                  className={"lang-btn" + (voiceLang === l.code ? " selected" : "")}
+                  onClick={() => setVoiceLang(l.code)}
+                >
+                  {l.label}
+                </button>
+              ))}
             </div>
             <div className="center-col">
-              <div className="mic-orb">🎙️</div>
+              <div className="mic-orb"><IconMic size={32} /></div>
               <p className="muted">Tap the mic and describe your sale or expense.</p>
             </div>
-            <span className="simulated-badge">🧪 {t(lang, "simulatedLabel")}</span>
+            <span className="simulated-badge"><IconFlask size={13} /> {t(lang, "simulatedLabel")}</span>
             <button className="btn btn-primary btn-block" onClick={startListening}>
               {t(lang, "capture")}
             </button>
@@ -81,17 +108,17 @@ export const VoiceFlow: React.FC = () => {
 
         {step === "processing" && (
           <div className="center-col" style={{ flex: 1 }}>
-            <div className="mic-orb">🎙️</div>
+            <div className="mic-orb listening"><IconMic size={32} /></div>
             <p style={{ fontWeight: 700 }}>{t(lang, "listening")}</p>
             <div className="spinner" />
             <p style={{ fontWeight: 700 }}>{t(lang, "processing")}</p>
-            <span className="simulated-badge">🧪 {t(lang, "simulatedLabel")}</span>
+            <span className="simulated-badge"><IconFlask size={13} /> {t(lang, "simulatedLabel")}</span>
           </div>
         )}
 
         {step === "failed" && (
           <div className="center-col" style={{ flex: 1 }}>
-            <div className="empty-icon">🙁</div>
+            <div className="empty-icon"><IconSad size={26} /></div>
             <p style={{ fontWeight: 700, margin: 0 }}>{t(lang, "didntCatchThat")}</p>
             <div style={{ display: "flex", gap: 10, width: "100%", marginTop: 10 }}>
               <button className="btn btn-secondary" style={{ flex: 1 }} onClick={() => setStep("listen")}>
@@ -117,7 +144,7 @@ export const VoiceFlow: React.FC = () => {
             onCancel={() => navigate("/")}
             extraTopContent={
               <span className="simulated-badge" style={{ marginBottom: 4 }}>
-                🧪 {t(lang, "simulatedLabel")}
+                <IconFlask size={13} /> {t(lang, "simulatedLabel")}
               </span>
             }
             onSubmit={(v) => {

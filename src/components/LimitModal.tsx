@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useStore } from "../store";
 import { t } from "../i18n";
 import { TIER_LIMITS } from "../types";
+import { IconWarning } from "./Icons";
 
 export const LimitModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const { state } = useStore();
@@ -12,8 +13,10 @@ export const LimitModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   return (
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal-sheet" onClick={(e) => e.stopPropagation()}>
-        <div style={{ fontSize: 34, textAlign: "center" }}>🚦</div>
-        <h2 style={{ margin: 0, fontSize: 18, textAlign: "center" }}>{t(lang, "limitReached")}</h2>
+        <div className="modal-icon">
+          <IconWarning size={26} />
+        </div>
+        <h2 style={{ margin: 0, fontSize: "var(--text-lg)", textAlign: "center" }}>{t(lang, "limitReached")}</h2>
         <p className="muted" style={{ margin: 0, textAlign: "center" }}>
           {`Your ${state.tier} plan allows ${TIER_LIMITS[state.tier]} entries per day. Upgrade for a higher daily limit.`}
         </p>

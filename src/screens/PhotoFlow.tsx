@@ -7,6 +7,7 @@ import { EntryForm } from "../components/EntryForm";
 import { LimitModal } from "../components/LimitModal";
 import { useToast } from "../components/Toast";
 import { mockReceipts, pickRandom, shouldSimulateFailure, type MockReceiptResult } from "../mockAi";
+import { IconCamera, IconFlask, IconSad } from "../components/Icons";
 
 type Step = "capture" | "processing" | "failed" | "confirm";
 
@@ -56,9 +57,10 @@ export const PhotoFlow: React.FC = () => {
         {step === "capture" && (
           <>
             <div className="viewfinder">
-              <span>📷 Point camera at receipt</span>
+              <IconCamera size={28} />
+              <span>Point camera at receipt</span>
             </div>
-            <span className="simulated-badge">🧪 {t(lang, "simulatedLabel")}</span>
+            <span className="simulated-badge"><IconFlask size={13} /> {t(lang, "simulatedLabel")}</span>
             <button className="btn btn-primary btn-block" onClick={startCapture}>
               {t(lang, "capture")}
             </button>
@@ -72,13 +74,13 @@ export const PhotoFlow: React.FC = () => {
           <div className="center-col" style={{ flex: 1 }}>
             <div className="spinner" />
             <p style={{ fontWeight: 700 }}>{t(lang, "readingReceipt")}</p>
-            <span className="simulated-badge">🧪 {t(lang, "simulatedLabel")}</span>
+            <span className="simulated-badge"><IconFlask size={13} /> {t(lang, "simulatedLabel")}</span>
           </div>
         )}
 
         {step === "failed" && (
           <div className="center-col" style={{ flex: 1 }}>
-            <div className="empty-icon">🙁</div>
+            <div className="empty-icon"><IconSad size={26} /></div>
             <p style={{ fontWeight: 700, margin: 0 }}>{t(lang, "couldntReadClearly")}</p>
             <div style={{ display: "flex", gap: 10, width: "100%", marginTop: 10 }}>
               <button className="btn btn-secondary" style={{ flex: 1 }} onClick={() => setStep("capture")}>
@@ -104,7 +106,7 @@ export const PhotoFlow: React.FC = () => {
             onCancel={() => navigate("/")}
             extraTopContent={
               <span className="simulated-badge" style={{ marginBottom: 4 }}>
-                🧪 {t(lang, "simulatedLabel")}
+                <IconFlask size={13} /> {t(lang, "simulatedLabel")}
               </span>
             }
             onSubmit={(v) => {
