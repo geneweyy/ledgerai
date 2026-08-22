@@ -100,6 +100,7 @@ export type DictKey =
   | "sell"
   | "done"
   | "netProfit"
+  | "profitTrend"
   | "yesterday"
   | "last7Days"
   | "lastMonth"
@@ -211,6 +212,7 @@ export const dictionaries: Record<Language, Dict> = {
     sell: "Sell",
     done: "Done",
     netProfit: "Net Profit",
+    profitTrend: "Profit Trend",
     yesterday: "Yesterday",
     last7Days: "Last 7 Days",
     lastMonth: "Last Month",
@@ -319,6 +321,7 @@ export const dictionaries: Record<Language, Dict> = {
     sell: "Jual",
     done: "Selesai",
     netProfit: "Untung Bersih",
+    profitTrend: "Trend Untung",
     yesterday: "Semalam",
     last7Days: "7 Hari Lepas",
     lastMonth: "Bulan Lepas",
@@ -427,6 +430,7 @@ export const dictionaries: Record<Language, Dict> = {
     sell: "销售",
     done: "完成",
     netProfit: "净利润",
+    profitTrend: "利润趋势",
     yesterday: "昨天",
     last7Days: "过去7天",
     lastMonth: "上个月",
@@ -535,6 +539,7 @@ export const dictionaries: Record<Language, Dict> = {
     sell: "விற்பனை",
     done: "முடிந்தது",
     netProfit: "நிகர லாபம்",
+    profitTrend: "லாப போக்கு",
     yesterday: "நேற்று",
     last7Days: "கடந்த 7 நாட்கள்",
     lastMonth: "கடந்த மாதம்",

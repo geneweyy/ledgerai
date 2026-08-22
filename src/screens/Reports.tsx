@@ -91,12 +91,36 @@ export const Reports: React.FC = () => {
   const maxVal = Math.max(1, ...dayBuckets.flatMap((b) => [b.income, b.expense]));
   const selectedBucket = selectedBucketIdx !== null ? dayBuckets[selectedBucketIdx] : null;
 
+  // profit trend (line chart) geometry
+  const [selectedPointIdx, setSelectedPointIdx] = useState<number | null>(null);
+  const profitPoints = useMemo(() => dayBuckets.map((b) => ({ net: b.income - b.expense, label: b.label })), [dayBuckets]);
+  const chartH = 96;
+  const pointGap = 52;
+  const chartW = profitPoints.length > 1 ? (profitPoints.length - 1) * pointGap : 0;
+  const netVals = profitPoints.map((p) => p.net);
+  const minNet = Math.min(0, ...netVals);
+  const maxNet = Math.max(0, ...netVals, 0.01);
+  const netRange = maxNet - minNet || 1;
+  const zeroY = chartH - ((0 - minNet) / netRange) * chartH;
+  const linePoints = profitPoints.map((p, i) => ({
+    x: profitPoints.length > 1 ? i * pointGap : 0,
+    y: chartH - ((p.net - minNet) / netRange) * chartH,
+    ...p,
+  }));
+  const pathD = linePoints.map((c, i) => `${i === 0 ? "M" : "L"} ${c.x} ${c.y}`).join(" ");
+  const areaD =
+    linePoints.length > 1
+      ? `${pathD} L ${linePoints[linePoints.length - 1].x} ${chartH} L ${linePoints[0].x} ${chartH} Z`
+      : "";
+  const selectedPoint = selectedPointIdx !== null ? linePoints[selectedPointIdx] : null;
+
   const rangeLabel = RANGE_KEYS.find((r) => r.key === range)?.labelKey ?? "thisWeek";
 
   const selectRange = (r: Range) => {
     setRange(r);
     setRangeOpen(false);
     setSelectedBucketIdx(null);
+    setSelectedPointIdx(null);
   };
 
   return (
@@ -152,6 +176,60 @@ export const Reports: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {profitPoints.length > 0 && (
+          <div className="card profit-trend-card">
+            <p className="section-title" style={{ marginTop: 0 }}>{t(lang, "profitTrend")}</p>
+            {profitPoints.length === 1 ? (
+              <div className="profit-glow-wrap">
+                <button
+                  type="button"
+                  className={"profit-glow-dot" + (linePoints[0].net >= 0 ? " positive" : " negative") + (selectedPointIdx === 0 ? " active" : "")}
+                  onClick={() => setSelectedPointIdx((cur) => (cur === 0 ? null : 0))}
+                  aria-label={profitPoints[0].label}
+                />
+                <span className="profit-glow-label">{profitPoints[0].label}</span>
+              </div>
+            ) : (
+              <div className="bar-chart-scroll">
+                <svg
+                  className="profit-line-svg"
+                  width={chartW}
+                  height={chartH + 28}
+                  viewBox={`0 -6 ${chartW} ${chartH + 28}`}
+                  preserveAspectRatio="none"
+                >
+                  <line x1={0} y1={zeroY} x2={chartW} y2={zeroY} className="profit-zero-line" />
+                  {areaD && <path d={areaD} className="profit-line-area" />}
+                  <path d={pathD} className="profit-line-path" />
+                  {linePoints.map((p, i) => (
+                    <circle
+                      key={i}
+                      cx={p.x}
+                      cy={p.y}
+                      r={selectedPointIdx === i ? 6 : 4}
+                      className={"profit-line-dot" + (p.net >= 0 ? " positive" : " negative") + (selectedPointIdx === i ? " active" : "")}
+                      onClick={() => setSelectedPointIdx((cur) => (cur === i ? null : i))}
+                    />
+                  ))}
+                  {linePoints.map((p, i) => (
+                    <text key={"l" + i} x={p.x} y={chartH + 20} className="profit-line-label" textAnchor="middle">
+                      {p.label}
+                    </text>
+                  ))}
+                </svg>
+              </div>
+            )}
+            {selectedPoint && (
+              <div className="profit-tooltip">
+                <span className="profit-tooltip-label">{selectedPoint.label}</span>
+                <span className={"profit-tooltip-value" + (selectedPoint.net >= 0 ? " positive" : " negative")}>
+                  {formatRM(selectedPoint.net)}
+                </span>
+              </div>
+            )}
+          </div>
+        )}
 
         <div>
           <p className="section-title">{t(lang, "logNewTransaction")}</p>

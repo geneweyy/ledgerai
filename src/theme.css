@@ -1366,6 +1366,137 @@ a {
   padding: 0 var(--space-4);
 }
 
+/* ---------- Profit trend (line chart) ---------- */
+
+.profit-trend-card {
+  padding-bottom: var(--space-3);
+}
+
+.profit-line-svg {
+  display: block;
+  overflow: visible;
+}
+
+.profit-zero-line {
+  stroke: var(--border);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+}
+
+.profit-line-area {
+  fill: var(--tint-mint);
+  opacity: 0.5;
+}
+
+.profit-line-path {
+  fill: none;
+  stroke: var(--accent-mint);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.profit-line-dot {
+  fill: var(--accent-mint);
+  stroke: var(--bg-card);
+  stroke-width: 2;
+  cursor: pointer;
+  transition: r 0.15s ease;
+}
+
+.profit-line-dot.negative {
+  fill: var(--danger);
+}
+
+.profit-line-dot.active {
+  stroke: var(--bg-card);
+  stroke-width: 3;
+}
+
+.profit-line-label {
+  fill: var(--text-tertiary);
+  font-size: 10px;
+  font-family: var(--font-sans);
+  font-weight: 500;
+}
+
+.profit-glow-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-5) 0 var(--space-2);
+}
+
+.profit-glow-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent-mint);
+  box-shadow: 0 0 0 6px var(--tint-mint), 0 0 22px 4px rgba(2, 195, 154, 0.55);
+  cursor: pointer;
+  animation: profit-glow-pulse 2.2s ease-in-out infinite;
+}
+
+.profit-glow-dot.negative {
+  background: var(--danger);
+  box-shadow: 0 0 0 6px var(--tint-red), 0 0 22px 4px rgba(216, 90, 48, 0.5);
+  animation-name: profit-glow-pulse-negative;
+}
+
+.profit-glow-dot.active {
+  animation: none;
+  box-shadow: 0 0 0 8px var(--tint-mint-strong), 0 0 26px 6px rgba(2, 195, 154, 0.65);
+}
+
+.profit-glow-dot.negative.active {
+  box-shadow: 0 0 0 8px var(--tint-red-strong), 0 0 26px 6px rgba(216, 90, 48, 0.6);
+}
+
+@keyframes profit-glow-pulse {
+  0%, 100% { box-shadow: 0 0 0 6px var(--tint-mint), 0 0 22px 4px rgba(2, 195, 154, 0.55); }
+  50% { box-shadow: 0 0 0 9px var(--tint-mint), 0 0 30px 8px rgba(2, 195, 154, 0.65); }
+}
+
+@keyframes profit-glow-pulse-negative {
+  0%, 100% { box-shadow: 0 0 0 6px var(--tint-red), 0 0 22px 4px rgba(216, 90, 48, 0.5); }
+  50% { box-shadow: 0 0 0 9px var(--tint-red), 0 0 30px 8px rgba(216, 90, 48, 0.6); }
+}
+
+.profit-glow-label {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  font-weight: 500;
+}
+
+.profit-tooltip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-subtle);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  margin-top: var(--space-3);
+}
+
+.profit-tooltip-label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.profit-tooltip-value {
+  font-size: var(--text-md);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--hero-positive);
+}
+
+.profit-tooltip-value.negative {
+  color: var(--hero-negative);
+}
+
 /* ---------- Logo ---------- */
 
 .logo-mark {
