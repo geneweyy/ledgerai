@@ -90,7 +90,7 @@ export const Tax: React.FC = () => {
           {state.tier === "pro" && eInvoiceUnlocked && (
             <>
               <p className="muted">
-                Your turnover ({formatRM(state.turnover)}) is above the RM1,000,000 threshold, so MyInvois
+                Your turnover ({formatRM(state.turnover)}) has reached the RM1,000,000 threshold, so MyInvois
                 e-Invoicing tools are available.
               </p>
               {!invoiceGenerated ? (

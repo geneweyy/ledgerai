@@ -180,7 +180,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }));
   }, []);
 
-  const eInvoiceUnlocked = state.tier === "pro" && state.turnover > 1000000;
+  const eInvoiceUnlocked = state.tier === "pro" && state.turnover >= 1000000;
 
   const setThemeMode = useCallback((m: ThemeMode) => {
     setState((prev) => ({ ...prev, themeMode: m }));
