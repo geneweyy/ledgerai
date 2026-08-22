@@ -2,11 +2,26 @@ import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useStore } from "../store";
 import { t } from "../i18n";
-import { formatRM } from "../utils";
+import { formatRM, isSameLocalDay } from "../utils";
 import { TopBar } from "../components/TopBar";
 import { TabBar } from "../components/TabBar";
 import { LimitModal } from "../components/LimitModal";
 import { IconCamera, IconMic, IconReceipt, IconCheck, IconWarning, IconEmptyReceipt } from "../components/Icons";
+
+function sparklinePoints(values: number[], width: number, height: number): string {
+  if (values.length === 0) return "";
+  const min = Math.min(...values, 0);
+  const max = Math.max(...values, 0);
+  const range = max - min || 1;
+  const step = values.length > 1 ? width / (values.length - 1) : 0;
+  return values
+    .map((v, i) => {
+      const x = i * step;
+      const y = height - ((v - min) / range) * height;
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    })
+    .join(" ");
+}
 
 export const Home: React.FC = () => {
   const { state, todaysEntries, dailyLimit, limitReached, canAddEntry } = useStore();
@@ -23,6 +38,40 @@ export const Home: React.FC = () => {
     }
     return { income, expense, net: income - expense };
   }, [todaysEntries]);
+
+  // last 7 days net, oldest -> newest (today last)
+  const last7 = useMemo(() => {
+    const days: { net: number }[] = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      let dayIncome = 0;
+      let dayExpense = 0;
+      for (const e of state.entries) {
+        if (isSameLocalDay(e.createdAt, d)) {
+          if (e.type === "income") dayIncome += e.amount;
+          else dayExpense += e.amount;
+        }
+      }
+      days.push({ net: dayIncome - dayExpense });
+    }
+    return days;
+  }, [state.entries]);
+
+  const trend = useMemo(() => {
+    const priorDays = last7.slice(0, 6); // days before today
+    const avg = priorDays.length ? priorDays.reduce((s, d) => s + d.net, 0) / priorDays.length : 0;
+    const todayNet = last7[last7.length - 1]?.net ?? 0;
+    if (avg === 0) return null;
+    const pct = ((todayNet - avg) / Math.abs(avg)) * 100;
+    return { pct, positive: pct >= 0 };
+  }, [last7]);
+
+  const sparkPts = sparklinePoints(
+    last7.map((d) => d.net),
+    100,
+    28
+  );
 
   const recent = useMemo(() => {
     return [...state.entries].sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1)).slice(0, 15);
@@ -57,6 +106,25 @@ export const Home: React.FC = () => {
               <div className="hero-stat-value">{formatRM(net)}</div>
             </div>
           </div>
+
+          {trend && (
+            <div className="trend-row">
+              <span className={"trend-caption" + (trend.positive ? " positive" : " negative")}>
+                {trend.positive ? "▲" : "▼"} {Math.abs(trend.pct).toFixed(0)}%{" "}
+                {trend.positive ? t(lang, "aboveAvg") : t(lang, "belowAvg")}
+              </span>
+              <svg className="sparkline" width="100" height="28" viewBox="0 0 100 28">
+                <polyline
+                  points={sparkPts}
+                  fill="none"
+                  stroke={trend.positive ? "var(--mint2)" : "#ff9270"}
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+          )}
         </div>
 
         <div
@@ -79,7 +147,7 @@ export const Home: React.FC = () => {
               <span className="quick-action-icon"><IconMic size={20} /></span>
               {t(lang, "speakTransaction")}
             </button>
-            <button className="quick-action-btn" onClick={() => guardedNav("/log/catalog")}>
+            <button className="quick-action-btn" onClick={() => guardedNav("/catalog")}>
               <span className="quick-action-icon"><IconReceipt size={20} /></span>
               {t(lang, "tapSavedItem")}
             </button>

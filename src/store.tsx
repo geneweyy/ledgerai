@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useMemo, useState, useCallback } from "react";
-import type { AppState, Entry, CatalogItem, Language, Tier } from "./types";
+import type { AppState, Entry, CatalogItem, Language, Tier, ThemeMode, Profile } from "./types";
 import { TIER_LIMITS } from "./types";
 import { seedCatalogItems, seedEntries } from "./seed";
 
@@ -8,11 +8,14 @@ const STORAGE_KEY = "ledgerai_state";
 function freshState(): AppState {
   return {
     onboarded: false,
+    loggedIn: false,
     language: "en",
     tier: "free",
     turnover: 0,
     entries: [],
     catalogItems: seedCatalogItems(),
+    themeMode: "system",
+    profile: { businessName: "", ownerName: "", phone: "" },
   };
 }
 
@@ -64,6 +67,10 @@ interface StoreContextValue {
   completeOnboarding: (lang: Language) => void;
   resetDemoData: () => void;
   eInvoiceUnlocked: boolean;
+  setThemeMode: (m: ThemeMode) => void;
+  updateProfile: (p: Partial<Profile>) => void;
+  login: (username: string, password: string) => boolean;
+  logout: () => void;
 }
 
 const StoreContext = createContext<StoreContextValue | null>(null);
@@ -150,7 +157,8 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, []);
 
   const completeOnboarding = useCallback((lang: Language) => {
-    setState(() => ({
+    setState((prev) => ({
+      ...prev,
       onboarded: true,
       language: lang,
       tier: "free",
@@ -161,7 +169,8 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, []);
 
   const resetDemoData = useCallback(() => {
-    setState(() => ({
+    setState((prev) => ({
+      ...prev,
       onboarded: true,
       language: "en",
       tier: "free",
@@ -172,6 +181,35 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, []);
 
   const eInvoiceUnlocked = state.tier === "pro" && state.turnover > 1000000;
+
+  const setThemeMode = useCallback((m: ThemeMode) => {
+    setState((prev) => ({ ...prev, themeMode: m }));
+  }, []);
+
+  const updateProfile = useCallback((p: Partial<Profile>) => {
+    setState((prev) => ({ ...prev, profile: { ...prev.profile, ...p } }));
+  }, []);
+
+  const login = useCallback((username: string, password: string) => {
+    if (username === "test123" && password === "test123") {
+      setState((prev) => ({ ...prev, loggedIn: true }));
+      return true;
+    }
+    return false;
+  }, []);
+
+  const logout = useCallback(() => {
+    setState((prev) => ({ ...prev, loggedIn: false }));
+  }, []);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (state.themeMode === "system") {
+      root.removeAttribute("data-theme");
+    } else {
+      root.setAttribute("data-theme", state.themeMode);
+    }
+  }, [state.themeMode]);
 
   const value: StoreContextValue = {
     state,
@@ -191,6 +229,10 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     completeOnboarding,
     resetDemoData,
     eInvoiceUnlocked,
+    setThemeMode,
+    updateProfile,
+    login,
+    logout,
   };
 
   return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>;

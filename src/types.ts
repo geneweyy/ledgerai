@@ -23,13 +23,24 @@ export interface CatalogItem {
   category: string;
 }
 
+export type ThemeMode = "light" | "dark" | "system";
+
+export interface Profile {
+  businessName: string;
+  ownerName: string;
+  phone: string;
+}
+
 export interface AppState {
   onboarded: boolean;
+  loggedIn: boolean;
   language: Language;
   tier: Tier;
   turnover: number;
   entries: Entry[];
   catalogItems: CatalogItem[];
+  themeMode: ThemeMode;
+  profile: Profile;
 }
 
 export const TIER_LIMITS: Record<Tier, number> = {

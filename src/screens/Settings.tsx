@@ -9,6 +9,8 @@ import { TopBar } from "../components/TopBar";
 import { TabBar } from "../components/TabBar";
 import { ConfirmModal } from "../components/ConfirmModal";
 import { useToast } from "../components/Toast";
+import { IconUser, IconLogOut, IconSun, IconMoon, IconSettings } from "../components/Icons";
+import type { ThemeMode } from "../types";
 
 const TIERS: Tier[] = ["free", "solo", "business", "pro"];
 const LANGS: { code: Language; label: string }[] = [
@@ -17,9 +19,10 @@ const LANGS: { code: Language; label: string }[] = [
   { code: "zh", label: "中文" },
   { code: "ta", label: "தமிழ்" },
 ];
+const THEME_MODES: ThemeMode[] = ["light", "dark", "system"];
 
 export const Settings: React.FC = () => {
-  const { state, setTier, setTurnover, setLanguage, resetDemoData } = useStore();
+  const { state, setTier, setTurnover, setLanguage, resetDemoData, setThemeMode, logout } = useStore();
   const lang = state.language;
   const navigate = useNavigate();
   const { showToast } = useToast();
@@ -43,6 +46,34 @@ export const Settings: React.FC = () => {
     <div className="screen">
       <TopBar title={t(lang, "settings")} onBack={() => navigate(-1)} />
       <div className="page">
+        <div className="card" style={{ padding: "2px 14px" }}>
+          <button className="settings-row" onClick={() => navigate("/profile")}>
+            <span style={{ display: "flex", alignItems: "center", gap: 12 }}>
+              <span className="settings-row-icon"><IconUser size={17} /></span>
+              {t(lang, "profile")}
+            </span>
+            <span className="muted">{state.profile.businessName || "—"}</span>
+          </button>
+        </div>
+
+        <div>
+          <p className="section-title">{t(lang, "theme")}</p>
+          <div className="theme-toggle" style={{ marginTop: 8 }}>
+            {THEME_MODES.map((mode) => (
+              <button
+                key={mode}
+                className={state.themeMode === mode ? "active" : ""}
+                onClick={() => setThemeMode(mode)}
+              >
+                {mode === "light" && <IconSun size={15} />}
+                {mode === "dark" && <IconMoon size={15} />}
+                {mode === "system" && <IconSettings size={15} />}
+                {mode === "light" ? t(lang, "themeLight") : mode === "dark" ? t(lang, "themeDark") : t(lang, "themeSystem")}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div>
           <p className="section-title">{t(lang, "tier")}</p>
           <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 8 }}>
@@ -97,6 +128,16 @@ export const Settings: React.FC = () => {
 
         <button className="btn btn-danger btn-block" onClick={() => setConfirmReset(true)}>
           {t(lang, "resetDemoData")}
+        </button>
+
+        <button
+          className="btn btn-secondary btn-block"
+          onClick={() => {
+            logout();
+            navigate("/", { replace: true });
+          }}
+        >
+          <IconLogOut size={17} /> {t(lang, "logOut")}
         </button>
 
         <p className="muted" style={{ textAlign: "center" }}>

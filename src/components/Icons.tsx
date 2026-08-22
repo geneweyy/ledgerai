@@ -160,6 +160,46 @@ export const IconSad: React.FC<IconProps> = ({ size = 36, className }) => (
   </svg>
 );
 
+export const IconSun: React.FC<IconProps> = ({ size = 20, className }) => (
+  <svg {...base(size)} className={className}>
+    <circle cx="12" cy="12" r="4.2" />
+    <path d="M12 2.5v2.4M12 19.1v2.4M4.6 4.6l1.7 1.7M17.7 17.7l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.6 19.4l1.7-1.7M17.7 6.3l1.7-1.7" />
+  </svg>
+);
+
+export const IconMoon: React.FC<IconProps> = ({ size = 20, className }) => (
+  <svg {...base(size)} className={className}>
+    <path d="M20 14.2A8.5 8.5 0 1 1 9.8 4a6.8 6.8 0 0 0 10.2 10.2Z" />
+  </svg>
+);
+
+export const IconPhone: React.FC<IconProps> = ({ size = 20, className }) => (
+  <svg {...base(size)} className={className}>
+    <path d="M6 3h4.5l1.5 4-2.2 1.6a11.5 11.5 0 0 0 5.6 5.6L17 12l4 1.5V18a2 2 0 0 1-2 2c-7.2 0-13-5.8-13-13a2 2 0 0 1 2-2Z" />
+  </svg>
+);
+
+export const IconUser: React.FC<IconProps> = ({ size = 20, className }) => (
+  <svg {...base(size)} className={className}>
+    <circle cx="12" cy="8" r="3.6" />
+    <path d="M4.5 20a7.5 7.5 0 0 1 15 0" />
+  </svg>
+);
+
+export const IconLogOut: React.FC<IconProps> = ({ size = 20, className }) => (
+  <svg {...base(size)} className={className}>
+    <path d="M14 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-2" />
+    <path d="M9 12h11M17 8l3 4-3 4" />
+  </svg>
+);
+
+export const IconLock: React.FC<IconProps> = ({ size = 20, className }) => (
+  <svg {...base(size)} className={className}>
+    <rect x="5.5" y="10.5" width="13" height="9.5" rx="2" />
+    <path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" />
+  </svg>
+);
+
 export const IconFlask: React.FC<IconProps> = ({ size = 14, className }) => (
   <svg {...base(size)} className={className}>
     <path d="M10 3h4" />

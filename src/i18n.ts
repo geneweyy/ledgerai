@@ -70,7 +70,33 @@ export type DictKey =
   | "shareWhatsapp"
   | "generateInvoice"
   | "close"
-  | "manual";
+  | "manual"
+  | "login"
+  | "username"
+  | "password"
+  | "logIn"
+  | "logOut"
+  | "loginDemoNote"
+  | "loginError"
+  | "profile"
+  | "businessName"
+  | "ownerName"
+  | "phone"
+  | "phoneOptional"
+  | "theme"
+  | "themeLight"
+  | "themeDark"
+  | "themeSystem"
+  | "vsWeeklyAvg"
+  | "aboveAvg"
+  | "belowAvg"
+  | "lowerThanYesterday"
+  | "higherThanYesterday"
+  | "quantityAndNote"
+  | "optionalNote"
+  | "saved"
+  | "addItem"
+  | "sell";
 
 type Dict = Record<DictKey, string>;
 
@@ -146,6 +172,32 @@ export const dictionaries: Record<Language, Dict> = {
     generateInvoice: "Generate e-Invoice",
     close: "Close",
     manual: "Manual",
+    login: "Log in",
+    username: "Username",
+    password: "Password",
+    logIn: "Log in",
+    logOut: "Log out",
+    loginDemoNote: "Demo prototype — use test123 / test123 to continue.",
+    loginError: "Incorrect username or password.",
+    profile: "Profile",
+    businessName: "Business name",
+    ownerName: "Owner name",
+    phone: "Phone number",
+    phoneOptional: "Phone number (optional)",
+    theme: "Appearance",
+    themeLight: "Light",
+    themeDark: "Dark",
+    themeSystem: "System",
+    vsWeeklyAvg: "vs your weekly average",
+    aboveAvg: "above your weekly average",
+    belowAvg: "below your weekly average",
+    lowerThanYesterday: "lower than yesterday",
+    higherThanYesterday: "higher than yesterday",
+    quantityAndNote: "Quantity & note",
+    optionalNote: "Note (optional)",
+    saved: "Saved",
+    addItem: "Add item",
+    sell: "Sell",
   },
   bm: {
     home: "Utama",
@@ -218,6 +270,32 @@ export const dictionaries: Record<Language, Dict> = {
     generateInvoice: "Jana e-Invois",
     close: "Tutup",
     manual: "Manual",
+    login: "Log masuk",
+    username: "Nama pengguna",
+    password: "Kata laluan",
+    logIn: "Log masuk",
+    logOut: "Log keluar",
+    loginDemoNote: "Prototaip demo — guna test123 / test123 untuk teruskan.",
+    loginError: "Nama pengguna atau kata laluan salah.",
+    profile: "Profil",
+    businessName: "Nama perniagaan",
+    ownerName: "Nama pemilik",
+    phone: "Nombor telefon",
+    phoneOptional: "Nombor telefon (pilihan)",
+    theme: "Rupa",
+    themeLight: "Terang",
+    themeDark: "Gelap",
+    themeSystem: "Sistem",
+    vsWeeklyAvg: "berbanding purata mingguan anda",
+    aboveAvg: "melebihi purata mingguan anda",
+    belowAvg: "di bawah purata mingguan anda",
+    lowerThanYesterday: "lebih rendah daripada semalam",
+    higherThanYesterday: "lebih tinggi daripada semalam",
+    quantityAndNote: "Kuantiti & nota",
+    optionalNote: "Nota (pilihan)",
+    saved: "Disimpan",
+    addItem: "Tambah item",
+    sell: "Jual",
   },
   zh: {
     home: "首页",
@@ -290,6 +368,32 @@ export const dictionaries: Record<Language, Dict> = {
     generateInvoice: "生成电子发票",
     close: "关闭",
     manual: "手动",
+    login: "登录",
+    username: "用户名",
+    password: "密码",
+    logIn: "登录",
+    logOut: "登出",
+    loginDemoNote: "演示原型 — 使用 test123 / test123 继续。",
+    loginError: "用户名或密码错误。",
+    profile: "个人资料",
+    businessName: "商号名称",
+    ownerName: "店主姓名",
+    phone: "电话号码",
+    phoneOptional: "电话号码（可选）",
+    theme: "外观",
+    themeLight: "浅色",
+    themeDark: "深色",
+    themeSystem: "系统",
+    vsWeeklyAvg: "与本周平均相比",
+    aboveAvg: "高于本周平均水平",
+    belowAvg: "低于本周平均水平",
+    lowerThanYesterday: "低于昨天",
+    higherThanYesterday: "高于昨天",
+    quantityAndNote: "数量与备注",
+    optionalNote: "备注（可选）",
+    saved: "已保存",
+    addItem: "添加商品",
+    sell: "销售",
   },
   ta: {
     home: "முகப்பு",
@@ -362,6 +466,32 @@ export const dictionaries: Record<Language, Dict> = {
     generateInvoice: "மின்-விலைப்பட்டியல் உருவாக்கு",
     close: "மூடு",
     manual: "கைமுறை",
+    login: "உள்நுழை",
+    username: "பயனர்பெயர்",
+    password: "கடவுச்சொல்",
+    logIn: "உள்நுழை",
+    logOut: "வெளியேறு",
+    loginDemoNote: "டெமோ முன்மாதிரி — தொடர test123 / test123 பயன்படுத்தவும்.",
+    loginError: "தவறான பயனர்பெயர் அல்லது கடவுச்சொல்.",
+    profile: "சுயவிவரம்",
+    businessName: "வணிகப் பெயர்",
+    ownerName: "உரிமையாளர் பெயர்",
+    phone: "தொலைபேசி எண்",
+    phoneOptional: "தொலைபேசி எண் (விருப்பம்)",
+    theme: "தோற்றம்",
+    themeLight: "வெளிச்சம்",
+    themeDark: "இருள்",
+    themeSystem: "கணினி",
+    vsWeeklyAvg: "உங்கள் வாராந்திர சராசரியுடன் ஒப்பிடும்போது",
+    aboveAvg: "உங்கள் வாராந்திர சராசரியை விட அதிகம்",
+    belowAvg: "உங்கள் வாராந்திர சராசரியை விட குறைவு",
+    lowerThanYesterday: "நேற்றை விட குறைவு",
+    higherThanYesterday: "நேற்றை விட அதிகம்",
+    quantityAndNote: "அளவு & குறிப்பு",
+    optionalNote: "குறிப்பு (விருப்பம்)",
+    saved: "சேமிக்கப்பட்டது",
+    addItem: "பொருள் சேர்",
+    sell: "விற்பனை",
   },
 };
 
