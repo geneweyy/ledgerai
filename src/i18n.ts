@@ -55,6 +55,7 @@ export type DictKey =
   | "turnover"
   | "language"
   | "taxCompliance"
+  | "taxTab"
   | "lhdnIncomeTax"
   | "sstReporting"
   | "myInvois"
@@ -165,6 +166,7 @@ export const dictionaries: Record<Language, Dict> = {
     turnover: "Annual Turnover (RM)",
     language: "Language",
     taxCompliance: "Tax & Compliance",
+    taxTab: "Tax",
     lhdnIncomeTax: "LHDN Income Tax",
     sstReporting: "SST Reporting",
     myInvois: "MyInvois e-Invoicing",
@@ -272,6 +274,7 @@ export const dictionaries: Record<Language, Dict> = {
     turnover: "Perolehan tahunan (RM)",
     language: "Bahasa",
     taxCompliance: "Cukai & Pematuhan",
+    taxTab: "Cukai",
     lhdnIncomeTax: "Cukai Pendapatan LHDN",
     sstReporting: "Pelaporan SST",
     myInvois: "e-Invois MyInvois",
@@ -379,6 +382,7 @@ export const dictionaries: Record<Language, Dict> = {
     turnover: "年营业额 (RM)",
     language: "语言",
     taxCompliance: "税务与合规",
+    taxTab: "税务",
     lhdnIncomeTax: "LHDN 所得税",
     sstReporting: "SST 报税",
     myInvois: "MyInvois 电子发票",
@@ -486,6 +490,7 @@ export const dictionaries: Record<Language, Dict> = {
     turnover: "ஆண்டு வருவாய் (RM)",
     language: "மொழி",
     taxCompliance: "வரி மற்றும் இணக்கம்",
+    taxTab: "வரி",
     lhdnIncomeTax: "LHDN வருமான வரி",
     sstReporting: "SST அறிக்கையிடல்",
     myInvois: "MyInvois மின்-விலைப்பட்டியல்",

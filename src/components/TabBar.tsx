@@ -12,7 +12,7 @@ export const TabBar: React.FC = () => {
     { to: "/", label: t(lang, "home"), Icon: IconHome },
     { to: "/catalog", label: t(lang, "catalog"), Icon: IconReceipt },
     { to: "/reports", label: t(lang, "reports"), Icon: IconChart },
-    { to: "/tax", label: t(lang, "taxCompliance"), Icon: IconDocument },
+    { to: "/tax", label: t(lang, "taxTab"), Icon: IconDocument },
     { to: "/settings", label: t(lang, "settings"), Icon: IconSettings },
   ];
 
