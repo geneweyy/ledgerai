@@ -200,6 +200,12 @@ export const IconLock: React.FC<IconProps> = ({ size = 20, className }) => (
   </svg>
 );
 
+export const IconChevronDown: React.FC<IconProps> = ({ size = 20, className }) => (
+  <svg {...base(size)} className={className}>
+    <path d="M6 9l6 6 6-6" />
+  </svg>
+);
+
 export const IconFlask: React.FC<IconProps> = ({ size = 14, className }) => (
   <svg {...base(size)} className={className}>
     <path d="M10 3h4" />

@@ -157,7 +157,7 @@ export const Settings: React.FC = () => {
             resetDemoData();
             setConfirmReset(false);
             setTurnoverInput("0");
-            showToast("Reset complete");
+            showToast("Reset Complete");
             navigate("/", { replace: true });
           }}
         />

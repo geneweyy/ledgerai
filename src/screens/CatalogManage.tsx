@@ -11,6 +11,8 @@ import { useToast } from "../components/Toast";
 import type { CatalogItem } from "../types";
 import { IconPlus, IconEdit, IconTrash, IconReceipt, IconMinus, IconCheck } from "../components/Icons";
 
+
+
 const CATEGORY_OPTIONS = ["Food", "Beverage", "Snack", "Ingredients", "Other"];
 
 interface FormState {
@@ -24,6 +26,9 @@ export const CatalogManage: React.FC = () => {
   const lang = state.language;
   const navigate = useNavigate();
   const { showToast } = useToast();
+
+  // Whole-catalog edit-mode toggle (iOS-Photos-style): when on, tapping a tile edits it
+  const [editMode, setEditMode] = useState(false);
 
   // Sell-flow state: which tile is expanded for sale
   const [activeSaleId, setActiveSaleId] = useState<string | null>(null);
@@ -147,7 +152,25 @@ export const CatalogManage: React.FC = () => {
 
   return (
     <div className="screen">
-      <TopBar title={t(lang, "catalog")} onBack={() => navigate(-1)} />
+      <TopBar
+        title={t(lang, "catalog")}
+        onBack={() => navigate(-1)}
+        right={
+          state.catalogItems.length > 0 ? (
+            <button
+              className="icon-btn"
+              style={{ width: "auto", padding: "0 10px" }}
+              onClick={() => {
+                setEditMode((m) => !m);
+                closeSale();
+              }}
+              aria-label={editMode ? t(lang, "done") : t(lang, "editCatalog")}
+            >
+              {editMode ? t(lang, "done") : t(lang, "edit")}
+            </button>
+          ) : undefined
+        }
+      />
       <div className="page">
         <button className="btn btn-secondary btn-block" onClick={openNew}>
           <IconPlus size={18} /> {t(lang, "addItem")}
@@ -164,19 +187,23 @@ export const CatalogManage: React.FC = () => {
               const isActive = activeSaleId === item.id;
               const isSaved = savedFlashId === item.id;
               return (
-                <div key={item.id} className={"catalog-tile" + (isSaved ? " saved" : "")}>
+                <div
+                  key={item.id}
+                  className={"catalog-tile" + (isSaved ? " saved" : "") + (editMode ? " edit-mode" : "")}
+                >
                   <div className="catalog-tile-top">
-                    <button className="catalog-tile-btn" onClick={() => (isActive ? closeSale() : openSale(item))}>
+                    <button
+                      className="catalog-tile-btn"
+                      onClick={() => (editMode ? openEdit(item) : isActive ? closeSale() : openSale(item))}
+                    >
                       <span className="catalog-tile-name">{item.name}</span>
                       <span className="catalog-tile-price">{formatRM(item.price)}</span>
                     </button>
-                    <button
-                      className="catalog-tile-pencil"
-                      onClick={() => openEdit(item)}
-                      aria-label={t(lang, "edit")}
-                    >
-                      <IconEdit size={15} />
-                    </button>
+                    {editMode && (
+                      <span className="catalog-tile-edit-badge">
+                        <IconEdit size={14} />
+                      </span>
+                    )}
                   </div>
 
                   {isSaved && !isActive && (
@@ -185,7 +212,7 @@ export const CatalogManage: React.FC = () => {
                     </div>
                   )}
 
-                  {isActive && (
+                  {!editMode && isActive && (
                     <div className="catalog-sale-panel">
                       <div className="catalog-sale-stepper">
                         <button onClick={() => adjustQty(-1)} disabled={qty <= 1} aria-label="decrease">

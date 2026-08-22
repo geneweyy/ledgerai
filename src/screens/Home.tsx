@@ -6,7 +6,7 @@ import { formatRM, isSameLocalDay } from "../utils";
 import { TopBar } from "../components/TopBar";
 import { TabBar } from "../components/TabBar";
 import { LimitModal } from "../components/LimitModal";
-import { IconCamera, IconMic, IconReceipt, IconCheck, IconWarning, IconEmptyReceipt } from "../components/Icons";
+import { IconCamera, IconMic, IconReceipt, IconCheck, IconWarning, IconEmptyReceipt, IconChevronBack } from "../components/Icons";
 
 function sparklinePoints(values: number[], width: number, height: number): string {
   if (values.length === 0) return "";
@@ -89,7 +89,21 @@ export const Home: React.FC = () => {
     <div className="screen">
       <TopBar title={t(lang, "home")} onBack={() => {}} />
       <div className="page">
-        <div className="hero-card">
+        <div
+          className="hero-card tappable"
+          role="button"
+          tabIndex={0}
+          onClick={() => navigate("/reports")}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              navigate("/reports");
+            }
+          }}
+        >
+          <span className="hero-chevron" style={{ transform: "rotate(180deg)" }}>
+            <IconChevronBack size={18} />
+          </span>
           <p className="hero-label">{t(lang, "didIMakeMoney")}</p>
           <div className={"hero-figure" + (net >= 0 ? " positive" : " negative")}>{formatRM(net)}</div>
           <div className="hero-stat-grid">
@@ -117,7 +131,7 @@ export const Home: React.FC = () => {
                 <polyline
                   points={sparkPts}
                   fill="none"
-                  stroke={trend.positive ? "var(--mint2)" : "#ff9270"}
+                  stroke={trend.positive ? "var(--hero-positive)" : "var(--hero-negative)"}
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -125,15 +139,6 @@ export const Home: React.FC = () => {
               </svg>
             </div>
           )}
-        </div>
-
-        <div
-          className={"badge" + (limitReached ? " badge-warning" : "")}
-          style={{ alignSelf: "flex-start" }}
-        >
-          {limitReached ? <IconWarning size={13} /> : <IconCheck size={13} />}
-          {todaysEntries.length} / {dailyLimit === Infinity ? "∞" : dailyLimit} {t(lang, "entriesUsed")}
-          {limitReached ? ` — ${t(lang, "limitReached")}` : ""}
         </div>
 
         <div>
@@ -152,6 +157,15 @@ export const Home: React.FC = () => {
               {t(lang, "tapSavedItem")}
             </button>
           </div>
+        </div>
+
+        <div
+          className={"badge" + (limitReached ? " badge-warning" : "")}
+          style={{ alignSelf: "flex-start" }}
+        >
+          {limitReached ? <IconWarning size={13} /> : <IconCheck size={13} />}
+          {todaysEntries.length} / {dailyLimit === Infinity ? "∞" : dailyLimit} {t(lang, "entriesUsed")}
+          {limitReached ? ` — ${t(lang, "limitReached")}` : ""}
         </div>
 
         <div>
